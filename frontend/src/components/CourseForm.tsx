@@ -14,7 +14,11 @@ export default function CourseForm() {
 
   useEffect(() => {
     if (id) {
-      (async () => { setLoading(true); try { setModel(await coursesApi.get(id)); } finally { setLoading(false); } })();
+      (async () => {
+        setLoading(true);
+        try { setModel(await coursesApi.get(id)); }
+        finally { setLoading(false); }
+      })();
     }
   }, [id]);
 
@@ -26,26 +30,36 @@ export default function CourseForm() {
   }
 
   return (
-    <div>
-      <h2>{id ? 'Edit' : 'Create'} Course</h2>
-      {loading ? <div>Loading...</div> : (
-        <form onSubmit={handleSubmit}>
-          <div>
-            <label>Course Name</label><br />
-            <input value={model.course_name} onChange={e => setModel({ ...model, course_name: e.target.value })} />
-          </div>
-          <div>
-            <label>Teacher</label><br />
-            <select value={model.teacher} onChange={e => setModel({ ...model, teacher: Number(e.target.value) })}>
-              <option value={0}>-- choose --</option>
-              {teachers.map(t => <option key={t.teacher_id} value={t.teacher_id}>{t.teacher_name}</option>)}
-            </select>
-          </div>
-          <div style={{ marginTop: 8 }}>
-            <button type="submit">Save</button>
-            <button type="button" onClick={() => navigate('/courses')} style={{ marginLeft: 8 }}>Cancel</button>
-          </div>
-        </form>
+    <div className="main fade-in">
+      <div className="page-header">
+        <h1 className="page-title">{id ? 'Edit' : 'New'} Course</h1>
+      </div>
+      {loading ? (
+        <div className="loading"><div className="spinner" /> Loading...</div>
+      ) : (
+        <div className="form-card">
+          <form onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label className="form-label">Course Name</label>
+              <input className="form-input" placeholder="e.g. Introduction to Programming" value={model.course_name}
+                onChange={e => setModel({ ...model, course_name: e.target.value })} required />
+            </div>
+            <div className="form-group">
+              <label className="form-label">Assigned Teacher</label>
+              <select className="form-select" value={model.teacher}
+                onChange={e => setModel({ ...model, teacher: Number(e.target.value) })} required>
+                <option value={0}>— Select a teacher —</option>
+                {teachers.map(t => (
+                  <option key={t.teacher_id} value={t.teacher_id}>{t.teacher_name}</option>
+                ))}
+              </select>
+            </div>
+            <div className="form-actions">
+              <button type="submit" className="btn btn-primary">Save Course</button>
+              <button type="button" className="btn btn-ghost" onClick={() => navigate('/courses')}>Cancel</button>
+            </div>
+          </form>
+        </div>
       )}
     </div>
   );

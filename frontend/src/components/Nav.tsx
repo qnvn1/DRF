@@ -1,13 +1,14 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 export default function Nav() {
   return (
-    <nav style={{ padding: 12, background: '#282c34', color: 'white' }}>
-      <Link to="/students" style={{ marginRight: 12, color: 'white' }}>Students</Link>
-      <Link to="/teachers" style={{ marginRight: 12, color: 'white' }}>Teachers</Link>
-      <Link to="/courses" style={{ marginRight: 12, color: 'white' }}>Courses</Link>
-      <Link to="/enrollments" style={{ marginRight: 12, color: 'white' }}>Enrollments</Link>
+    <nav className="nav">
+      <span className="nav-brand">🎓 SchoolMS</span>
+      <NavLink to="/students" className={({ isActive }) => isActive ? 'active' : ''}>Students</NavLink>
+      <NavLink to="/teachers" className={({ isActive }) => isActive ? 'active' : ''}>Teachers</NavLink>
+      <NavLink to="/courses" className={({ isActive }) => isActive ? 'active' : ''}>Courses</NavLink>
+      <NavLink to="/enrollments" className={({ isActive }) => isActive ? 'active' : ''}>Enrollments</NavLink>
     </nav>
   );
 }

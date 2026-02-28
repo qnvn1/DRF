@@ -14,29 +14,22 @@ import EnrollmentForm from './components/EnrollmentForm';
 function App() {
   return (
     <BrowserRouter>
-      <div className="App">
-        <Nav />
-        <main style={{ padding: 16 }}>
-          <Routes>
-            <Route path="/" element={<Navigate to="/students" replace />} />
-            <Route path="/students" element={<StudentList />} />
-            <Route path="/students/new" element={<StudentForm />} />
-            <Route path="/students/:id/edit" element={<StudentForm />} />
-
-            <Route path="/teachers" element={<TeacherList />} />
-            <Route path="/teachers/new" element={<TeacherForm />} />
-            <Route path="/teachers/:id/edit" element={<TeacherForm />} />
-
-            <Route path="/courses" element={<CourseList />} />
-            <Route path="/courses/new" element={<CourseForm />} />
-            <Route path="/courses/:id/edit" element={<CourseForm />} />
-
-            <Route path="/enrollments" element={<EnrollmentList />} />
-            <Route path="/enrollments/new" element={<EnrollmentForm />} />
-            <Route path="/enrollments/:id/edit" element={<EnrollmentForm />} />
-          </Routes>
-        </main>
-      </div>
+      <Nav />
+      <Routes>
+        <Route path="/" element={<Navigate to="/students" replace />} />
+        <Route path="/students" element={<StudentList />} />
+        <Route path="/students/new" element={<StudentForm />} />
+        <Route path="/students/:id/edit" element={<StudentForm />} />
+        <Route path="/teachers" element={<TeacherList />} />
+        <Route path="/teachers/new" element={<TeacherForm />} />
+        <Route path="/teachers/:id/edit" element={<TeacherForm />} />
+        <Route path="/courses" element={<CourseList />} />
+        <Route path="/courses/new" element={<CourseForm />} />
+        <Route path="/courses/:id/edit" element={<CourseForm />} />
+        <Route path="/enrollments" element={<EnrollmentList />} />
+        <Route path="/enrollments/new" element={<EnrollmentForm />} />
+        <Route path="/enrollments/:id/edit" element={<EnrollmentForm />} />
+      </Routes>
     </BrowserRouter>
   );
 }

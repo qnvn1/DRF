@@ -27,23 +27,31 @@ export default function TeacherForm() {
   }
 
   return (
-    <div>
-      <h2>{id ? 'Edit' : 'Create'} Teacher</h2>
-      {loading ? <div>Loading...</div> : (
-        <form onSubmit={handleSubmit}>
-          <div>
-            <label>Name</label><br />
-            <input value={model.teacher_name} onChange={e => setModel({ ...model, teacher_name: e.target.value })} />
-          </div>
-          <div>
-            <label>Department</label><br />
-            <input value={model.department} onChange={e => setModel({ ...model, department: e.target.value })} />
-          </div>
-          <div style={{ marginTop: 8 }}>
-            <button type="submit">Save</button>
-            <button type="button" onClick={() => navigate('/teachers')} style={{ marginLeft: 8 }}>Cancel</button>
-          </div>
-        </form>
+    <div className="main fade-in">
+      <div className="page-header">
+        <h1 className="page-title">{id ? 'Edit' : 'New'} Teacher</h1>
+      </div>
+      {loading ? (
+        <div className="loading"><div className="spinner" /> Loading...</div>
+      ) : (
+        <div className="form-card">
+          <form onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label className="form-label">Full Name</label>
+              <input className="form-input" placeholder="e.g. Dr. Jose Rizal" value={model.teacher_name}
+                onChange={e => setModel({ ...model, teacher_name: e.target.value })} required />
+            </div>
+            <div className="form-group">
+              <label className="form-label">Department</label>
+              <input className="form-input" placeholder="e.g. Computer Science" value={model.department}
+                onChange={e => setModel({ ...model, department: e.target.value })} required />
+            </div>
+            <div className="form-actions">
+              <button type="submit" className="btn btn-primary">Save Teacher</button>
+              <button type="button" className="btn btn-ghost" onClick={() => navigate('/teachers')}>Cancel</button>
+            </div>
+          </form>
+        </div>
       )}
     </div>
   );

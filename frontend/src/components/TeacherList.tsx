@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { teachersApi } from '../api';
 import { Teacher } from '../types';
-import { useNavigate, Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function TeacherList() {
   const [items, setItems] = useState<Teacher[]>([]);
@@ -24,27 +24,39 @@ export default function TeacherList() {
   }
 
   return (
-    <div>
-      <h2>Teachers</h2>
-      <div style={{ marginBottom: 12 }}><Link to="/teachers/new">Create Teacher</Link></div>
-      {loading ? <div>Loading...</div> : (
-        <table>
-          <thead><tr><th>ID</th><th>Name</th><th>Dept</th><th>Actions</th></tr></thead>
-          <tbody>
-            {items.map(t => (
-              <tr key={t.teacher_id}>
-                <td>{t.teacher_id}</td>
-                <td>{t.teacher_name}</td>
-                <td>{t.department}</td>
-                <td>
-                  <button onClick={() => navigate(`/teachers/${t.teacher_id}/edit`)}>Edit</button>
-                  <button onClick={() => handleDelete(t.teacher_id)} style={{ marginLeft: 8 }}>Delete</button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
+    <div className="main fade-in">
+      <div className="page-header">
+        <h1 className="page-title">Teachers</h1>
+        <Link to="/teachers/new" className="btn btn-primary">+ New Teacher</Link>
+      </div>
+      <div className="table-card">
+        {loading ? (
+          <div className="loading"><div className="spinner" /> Loading...</div>
+        ) : items.length === 0 ? (
+          <div className="empty"><div className="empty-icon">👨‍🏫</div><p>No teachers yet</p></div>
+        ) : (
+          <table>
+            <thead>
+              <tr><th>ID</th><th>Name</th><th>Department</th><th>Actions</th></tr>
+            </thead>
+            <tbody>
+              {items.map(t => (
+                <tr key={t.teacher_id}>
+                  <td><span className="id-chip">#{t.teacher_id}</span></td>
+                  <td style={{ fontWeight: 500 }}>{t.teacher_name}</td>
+                  <td><span className="badge badge-blue">{t.department}</span></td>
+                  <td>
+                    <div className="td-actions">
+                      <button className="btn btn-edit btn-sm" onClick={() => navigate(`/teachers/${t.teacher_id}/edit`)}>Edit</button>
+                      <button className="btn btn-danger btn-sm" onClick={() => handleDelete(t.teacher_id)}>Delete</button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </div>
     </div>
   );
 }

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { enrollmentsApi } from '../api';
 import { Enrollment } from '../types';
-import { useNavigate, Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function EnrollmentList() {
   const [items, setItems] = useState<Enrollment[]>([]);
@@ -24,27 +24,39 @@ export default function EnrollmentList() {
   }
 
   return (
-    <div>
-      <h2>Enrollments</h2>
-      <div style={{ marginBottom: 12 }}><Link to="/enrollments/new">Create Enrollment</Link></div>
-      {loading ? <div>Loading...</div> : (
-        <table>
-          <thead><tr><th>ID</th><th>Student</th><th>Course</th><th>Actions</th></tr></thead>
-          <tbody>
-            {items.map(e => (
-              <tr key={e.enrollment_id}>
-                <td>{e.enrollment_id}</td>
-                <td>{e.student_details?.name ?? e.student}</td>
-                <td>{e.course_details?.course_name ?? e.course}</td>
-                <td>
-                  <button onClick={() => navigate(`/enrollments/${e.enrollment_id}/edit`)}>Edit</button>
-                  <button onClick={() => handleDelete(e.enrollment_id)} style={{ marginLeft: 8 }}>Delete</button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
+    <div className="main fade-in">
+      <div className="page-header">
+        <h1 className="page-title">Enrollments</h1>
+        <Link to="/enrollments/new" className="btn btn-primary">+ New Enrollment</Link>
+      </div>
+      <div className="table-card">
+        {loading ? (
+          <div className="loading"><div className="spinner" /> Loading...</div>
+        ) : items.length === 0 ? (
+          <div className="empty"><div className="empty-icon">📋</div><p>No enrollments yet</p></div>
+        ) : (
+          <table>
+            <thead>
+              <tr><th>ID</th><th>Student</th><th>Course</th><th>Actions</th></tr>
+            </thead>
+            <tbody>
+              {items.map(e => (
+                <tr key={e.enrollment_id}>
+                  <td><span className="id-chip">#{e.enrollment_id}</span></td>
+                  <td style={{ fontWeight: 500 }}>{e.student_details?.name ?? `#${e.student}`}</td>
+                  <td><span className="badge badge-green">{e.course_details?.course_name ?? `#${e.course}`}</span></td>
+                  <td>
+                    <div className="td-actions">
+                      <button className="btn btn-edit btn-sm" onClick={() => navigate(`/enrollments/${e.enrollment_id}/edit`)}>Edit</button>
+                      <button className="btn btn-danger btn-sm" onClick={() => handleDelete(e.enrollment_id)}>Delete</button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </div>
     </div>
   );
 }

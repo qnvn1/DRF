@@ -13,42 +13,45 @@ export default function StudentForm() {
     if (id) {
       (async () => {
         setLoading(true);
-        try {
-          const data = await studentsApi.get(id);
-          setModel(data);
-        } finally { setLoading(false); }
+        try { setModel(await studentsApi.get(id)); }
+        finally { setLoading(false); }
       })();
     }
   }, [id]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (id) {
-      await studentsApi.update(id, model);
-    } else {
-      await studentsApi.create(model);
-    }
+    if (id) await studentsApi.update(id, model);
+    else await studentsApi.create(model);
     navigate('/students');
   }
 
   return (
-    <div>
-      <h2>{id ? 'Edit' : 'Create'} Student</h2>
-      {loading ? <div>Loading...</div> : (
-        <form onSubmit={handleSubmit}>
-          <div>
-            <label>Name</label><br />
-            <input value={model.name} onChange={e => setModel({ ...model, name: e.target.value })} />
-          </div>
-          <div>
-            <label>Year Level</label><br />
-            <input type="number" value={model.year_level} onChange={e => setModel({ ...model, year_level: Number(e.target.value) })} />
-          </div>
-          <div style={{ marginTop: 8 }}>
-            <button type="submit">Save</button>
-            <button type="button" onClick={() => navigate('/students')} style={{ marginLeft: 8 }}>Cancel</button>
-          </div>
-        </form>
+    <div className="main fade-in">
+      <div className="page-header">
+        <h1 className="page-title">{id ? 'Edit' : 'New'} Student</h1>
+      </div>
+      {loading ? (
+        <div className="loading"><div className="spinner" /> Loading...</div>
+      ) : (
+        <div className="form-card">
+          <form onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label className="form-label">Full Name</label>
+              <input className="form-input" placeholder="e.g. Maria Santos" value={model.name}
+                onChange={e => setModel({ ...model, name: e.target.value })} required />
+            </div>
+            <div className="form-group">
+              <label className="form-label">Year Level</label>
+              <input className="form-input" type="number" min={1} max={6} value={model.year_level}
+                onChange={e => setModel({ ...model, year_level: Number(e.target.value) })} required />
+            </div>
+            <div className="form-actions">
+              <button type="submit" className="btn btn-primary">Save Student</button>
+              <button type="button" className="btn btn-ghost" onClick={() => navigate('/students')}>Cancel</button>
+            </div>
+          </form>
+        </div>
       )}
     </div>
   );
